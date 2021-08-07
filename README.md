@@ -1,2 +1,2 @@
 # Reactivities
-Project with .NET, CQRS, React, Mobx and SignalR
+Clean Architecture project, using: .NET, CQRS, React, Mobx and SignalR
