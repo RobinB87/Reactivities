@@ -1,2 +1,2 @@
 # Reactivities
-Project with .NET, React, Mobx and Signalr
+Project with .NET, CQRS, React, Mobx and SignalR
