@@ -9,7 +9,7 @@ namespace API.Controllers
     {
         private IMediator _mediator;
 
-        // available in derived classes and self
+        // protected: available in derived classes and self
         protected IMediator Mediator => _mediator ??= HttpContext.RequestServices
             .GetService<IMediator>();
     }
