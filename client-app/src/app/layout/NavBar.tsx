@@ -1,8 +1,6 @@
 import { Button, Container, Menu } from "semantic-ui-react";
 
-export interface Props {}
-
-export default function NavBar(props: Props) {
+export default function NavBar() {
   return (
     <Menu inverted fixed="top">
       <Container>

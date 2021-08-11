@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Container, List } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
+import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { Activity } from "../models/activity";
 import NavBar from "./NavBar";
 
@@ -14,11 +15,7 @@ function App() {
     <>
       <NavBar />
       <Container style={{ marginTop: "7em" }}>
-        <List>
-          {activities.map((activity) => (
-            <List.Item key={activity.id}>{activity.title}</List.Item>
-          ))}
-        </List>
+        <ActivityDashboard activities={activities} />
       </Container>
     </>
   );
