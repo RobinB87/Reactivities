@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Header, List } from "semantic-ui-react";
-import "./App.css";
 
 function App() {
   const [activities, setActivities] = useState([]);
