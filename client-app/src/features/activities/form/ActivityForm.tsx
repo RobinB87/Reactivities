@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import { Button, Form, Segment } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
@@ -50,7 +50,7 @@ export default observer(function ActivityForm() {
         <Form.Input placeholder="City" value={activity.city} name="city" onChange={handleInputChange} />
         <Form.Input placeholder="Venue" value={activity.venue} name="venue" onChange={handleInputChange} />
         <Button loading={loading} floated="right" positive type="submit" content="Submit" />
-        <Button floated="right" type="button" content="Cancel" />
+        <Button as={Link} to="/activities" floated="right" type="button" content="Cancel" />
       </Form>
     </Segment>
   );
