@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Container } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
+import { useStore } from "../stores/store";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { Activity } from "../models/activity";
 import NavBar from "./NavBar";
@@ -8,6 +9,8 @@ import agent from "../api/agents";
 import LoadingComponent from "./LoadingComponent";
 
 function App() {
+  const { activityStore } = useStore();
+
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
@@ -78,6 +81,8 @@ function App() {
     <>
       <NavBar openForm={handleFormOpen} />
       <Container style={{ marginTop: "7em" }}>
+        <h2>{activityStore.title}</h2>
+
         <ActivityDashboard
           activities={activities}
           selectedActivity={selectedActivity}
