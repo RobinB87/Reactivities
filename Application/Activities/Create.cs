@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.Core;
+using Domain;
 using FluentValidation;
 using MediatR;
 using Persistence;
@@ -11,7 +12,7 @@ namespace Application.Activities
     {
         // Commands do not return anything.
         // Hence no type parameter is used for IRequest
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Activity Activity { get; set; }
         }
@@ -24,7 +25,7 @@ namespace Application.Activities
             }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
 
@@ -36,13 +37,13 @@ namespace Application.Activities
             // Even though commands do not return anything, this is still returning a Task of type Unit
             // This is just an object that MediatR provides, but it does not have any real value.
             // It is like returning nothing, but it tells the API that the request is finished, so it can move on.
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 _context.Activities.Add(request.Activity);
 
-                await _context.SaveChangesAsync();
-
-                return Unit.Value;
+                return await _context.SaveChangesAsync() > 0
+                    ? Result<Unit>.Success(Unit.Value) 
+                    : Result<Unit>.Failure("Failed to create activity");
             }
         }
     }
