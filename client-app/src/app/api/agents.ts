@@ -18,10 +18,16 @@ axios.interceptors.response.use(
     return response;
   },
   (error: AxiosError) => {
-    const { data, status } = error.response!;
+    const { data, status, config } = error.response!;
 
     switch (status) {
       case 400:
+        if (typeof data === "string") {
+          toast.error(data);
+        }
+        if (config.method === "get" && data.errors.hasOwnProperty("id")) {
+          history.push("/not-found");
+        }
         if (data.errors) {
           const modelStateErrors = [];
 
@@ -32,9 +38,8 @@ axios.interceptors.response.use(
           }
 
           throw modelStateErrors.flat();
-        } else {
-          toast.error(data);
         }
+
         break;
       case 401:
         toast.error("unauthorised");
