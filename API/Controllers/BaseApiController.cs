@@ -16,6 +16,8 @@ namespace API.Controllers
 
         protected ActionResult HandleResult<T>(Result<T> result)
         {
+            if (result == null) return NotFound();
+
             if (result.IsSuccess)
                 return result.Value == null 
                     ? NotFound() 
