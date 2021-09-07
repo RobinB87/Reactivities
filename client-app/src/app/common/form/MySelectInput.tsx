@@ -22,6 +22,7 @@ export default function MySelectInput(props: Props) {
         onBlur={() => helpers.setTouched(true)}
         placeholder={props.placeholder}
       />
+
       {meta.touched && meta.error ? (
         <Label basic color="red">
           {meta.error}
