@@ -1,7 +1,7 @@
 export interface Activity {
   id: string;
   title: string;
-  date: string;
+  date: Date | null;
   description: string;
   category: string;
   city: string;
@@ -11,7 +11,7 @@ export interface Activity {
 export const initialActivity = {
   id: "",
   title: "",
-  date: "",
+  date: null,
   description: "",
   category: "",
   city: "",
