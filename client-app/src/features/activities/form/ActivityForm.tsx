@@ -1,12 +1,13 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { Button, Segment } from "semantic-ui-react";
+import { Button, FormField, Label, Segment } from "semantic-ui-react";
 import { v4 as uuid } from "uuid";
 import { initialActivity } from "../../../app/models/activity";
 import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
@@ -15,6 +16,10 @@ export default observer(function ActivityForm() {
   const { id } = useParams<{ id: string }>();
 
   const [activity, setActivity] = useState(initialActivity);
+
+  const validationSchema = Yup.object({
+    title: Yup.string().required("The activity title is required"),
+  });
 
   useEffect(() => {
     if (id) loadActivity(id).then((activity) => setActivity(activity!));
@@ -38,10 +43,17 @@ export default observer(function ActivityForm() {
 
   return (
     <Segment clearing>
-      <Formik enableReinitialize initialValues={activity} onSubmit={(values) => console.log(values)}>
+      <Formik
+        validationSchema={validationSchema}
+        enableReinitialize
+        initialValues={activity}
+        onSubmit={(values) => console.log(values)}>
         {({ handleSubmit }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-            <Field placeholder="Title" name="title" />
+            <FormField>
+              <Field placeholder="Title" name="title" />
+              <ErrorMessage name="title" render={(error) => <Label basic color="red" content={error} />} />
+            </FormField>
             <Field placeholder="Description" name="description" />
             <Field placeholder="Category" name="category" />
             <Field type="date" placeholder="Date" name="date" />
