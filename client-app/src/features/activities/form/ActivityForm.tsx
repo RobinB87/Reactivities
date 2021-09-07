@@ -8,6 +8,7 @@ import { useStore } from "../../../app/stores/store";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import MyTextInput from "./../../../app/common/form/MyTextInput";
 
 export default observer(function ActivityForm() {
   const history = useHistory();
@@ -19,6 +20,11 @@ export default observer(function ActivityForm() {
 
   const validationSchema = Yup.object({
     title: Yup.string().required("The activity title is required"),
+    description: Yup.string().required("The activity description is required"),
+    category: Yup.string().required(),
+    date: Yup.string().required(),
+    venue: Yup.string().required(),
+    city: Yup.string().required(),
   });
 
   useEffect(() => {
@@ -50,15 +56,12 @@ export default observer(function ActivityForm() {
         onSubmit={(values) => console.log(values)}>
         {({ handleSubmit }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
-            <FormField>
-              <Field placeholder="Title" name="title" />
-              <ErrorMessage name="title" render={(error) => <Label basic color="red" content={error} />} />
-            </FormField>
-            <Field placeholder="Description" name="description" />
-            <Field placeholder="Category" name="category" />
-            <Field type="date" placeholder="Date" name="date" />
-            <Field placeholder="City" name="city" />
-            <Field placeholder="Venue" name="venue" />
+            <MyTextInput placeholder="title" name="title" />
+            <MyTextInput placeholder="Description" name="description" />
+            <MyTextInput placeholder="Category" name="category" />
+            <MyTextInput placeholder="Date" name="date" />
+            <MyTextInput placeholder="City" name="city" />
+            <MyTextInput placeholder="Venue" name="venue" />
             <Button loading={loading} floated="right" positive type="submit" content="Submit" />
             <Button as={Link} to="/activities" floated="right" type="button" content="Cancel" />
           </Form>
