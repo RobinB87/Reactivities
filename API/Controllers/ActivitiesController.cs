@@ -10,7 +10,7 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Activity>>> GetActivities()
+        public async Task<ActionResult> GetActivities()
         {
             return HandleResult(await Mediator.Send(new List.Query()));
         }
