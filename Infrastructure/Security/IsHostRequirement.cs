@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 using System;
 using System.Linq;
@@ -31,7 +32,14 @@ namespace Infrastructure.Security
             var activityId = Guid.Parse(_httpContextAccessor.HttpContext?.Request.RouteValues
                 .SingleOrDefault(x => x.Key == "id").Value?.ToString());
 
-            var attendee = _dbContext.ActivityAttendees.FindAsync(userId, activityId).Result;
+            // Use AsNoTracking as you don't want entity to stay in memory, 
+            // The handler itself has been disposed of (as the handler is transient)
+            // This will cause a bug that activity attendees disappear from the list
+            // Does not work with FindAsync, this will always track an entity
+            var attendee = _dbContext.ActivityAttendees
+                .AsNoTracking()
+                .SingleOrDefaultAsync(x => x.AppUserId == userId && x.ActivityId == activityId)
+                .Result;
 
             if (attendee == null) return Task.CompletedTask;
 
