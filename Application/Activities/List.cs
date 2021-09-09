@@ -1,5 +1,6 @@
 ﻿using Application.Core;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -28,13 +29,10 @@ namespace Application.Activities
             public async Task<Result<IEnumerable<ActivityDto>>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var activities = await _context.Activities
-                    .Include(a => a.Attendees)
-                    .ThenInclude(u => u.AppUser)
+                    .ProjectTo<ActivityDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
 
-                var activitiesToReturn = _mapper.Map<List<ActivityDto>>(activities);
-
-                return Result<IEnumerable<ActivityDto>>.Success(activitiesToReturn);
+                return Result<IEnumerable<ActivityDto>>.Success(activities);
             }
         }
     }
